@@ -7,14 +7,20 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.raphael.springbootionic.domain.Address;
 import com.raphael.springbootionic.domain.Category;
 import com.raphael.springbootionic.domain.City;
+import com.raphael.springbootionic.domain.Client;
 import com.raphael.springbootionic.domain.Product;
 import com.raphael.springbootionic.domain.State;
+import com.raphael.springbootionic.domain.enums.ClientType;
+import com.raphael.springbootionic.repositories.AddressRepository;
 import com.raphael.springbootionic.repositories.CategoryRepository;
 import com.raphael.springbootionic.repositories.CityRepository;
+import com.raphael.springbootionic.repositories.ClientRepository;
 import com.raphael.springbootionic.repositories.ProductRepository;
 import com.raphael.springbootionic.repositories.StateRepository;
+
 
 @SpringBootApplication
 public class SpringBootAndIonicApplication implements CommandLineRunner {
@@ -27,6 +33,10 @@ public class SpringBootAndIonicApplication implements CommandLineRunner {
 	private CityRepository cityRepository;	
 	@Autowired
 	private StateRepository stateRepository;
+	@Autowired
+	private ClientRepository clientRepository;
+	@Autowired
+	private AddressRepository addressRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootAndIonicApplication.class, args);
@@ -63,6 +73,17 @@ public class SpringBootAndIonicApplication implements CommandLineRunner {
 		
 		stateRepository.saveAll(Arrays.asList(est1, est2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Client cli1 = new Client(null, "Maria SIlva", "maria@gmail.com", "3534535", ClientType.PERSON);
+		cli1.getPhoneNumbers().addAll(Arrays.asList("53453543", "6435645"));
+		
+		Address e1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "42342432", cli1, c1);
+		Address e2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "343453553", cli1, c2);
+		
+		cli1.getAddresses().addAll(Arrays.asList(e1, e2));
+		
+		clientRepository.saveAll(Arrays.asList(cli1));
+		addressRepository.saveAll(Arrays.asList(e1, e2));		
 		
 	}
 
