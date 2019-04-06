@@ -7,22 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.raphael.springbootionic.domain.Category;
-import com.raphael.springbootionic.services.CategoryService;
+import com.raphael.springbootionic.domain.Client;
+import com.raphael.springbootionic.services.ClientService;
 
 @RestController
-@RequestMapping(value="/categories")
-public class CategoryResources {
+@RequestMapping(value="/clients")
+public class ClientResources {
 	
 	@Autowired
-	private CategoryService service;
+	private ClientService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		
-		Category obj = service.getCategory(id);
-		return ResponseEntity.ok().body(obj);
-		
+		Client obj = service.getClient(id);
+		return ResponseEntity.ok().body(obj);		
 	}
 
 }
