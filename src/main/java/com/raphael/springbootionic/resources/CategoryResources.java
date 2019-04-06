@@ -3,27 +3,29 @@ package com.raphael.springbootionic.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.raphael.springbootionic.domain.Category;
+import com.raphael.springbootionic.services.CategoryService;
 
 @RestController
 @RequestMapping(value="/categories")
 public class CategoryResources {
 	
-	@RequestMapping(method=RequestMethod.GET)
-	public List<Category> list() {
+	@Autowired
+	private CategoryService service;
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<?> find(@PathVariable Integer id) {
 		
-		Category cat1 = new Category(1, "Computing");
-		Category cat2 = new Category(1, "Office");
+		Category obj = service.getCategory(id);
+		return ResponseEntity.ok().body(obj);
 		
-		List<Category> list = new ArrayList<>();
-		list.add(cat1);
-		list.add(cat2);
-		
-		return list;
 	}
 
 }
