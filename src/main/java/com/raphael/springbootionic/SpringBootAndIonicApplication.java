@@ -1,5 +1,6 @@
 package com.raphael.springbootionic;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,21 @@ import com.raphael.springbootionic.domain.Address;
 import com.raphael.springbootionic.domain.Category;
 import com.raphael.springbootionic.domain.City;
 import com.raphael.springbootionic.domain.Client;
+import com.raphael.springbootionic.domain.Payment;
+import com.raphael.springbootionic.domain.PaymentWithCard;
+import com.raphael.springbootionic.domain.PaymentWithTicket;
 import com.raphael.springbootionic.domain.Product;
+import com.raphael.springbootionic.domain.Request;
 import com.raphael.springbootionic.domain.State;
 import com.raphael.springbootionic.domain.enums.ClientType;
+import com.raphael.springbootionic.domain.enums.PaymentState;
 import com.raphael.springbootionic.repositories.AddressRepository;
 import com.raphael.springbootionic.repositories.CategoryRepository;
 import com.raphael.springbootionic.repositories.CityRepository;
 import com.raphael.springbootionic.repositories.ClientRepository;
+import com.raphael.springbootionic.repositories.PaymentRepository;
 import com.raphael.springbootionic.repositories.ProductRepository;
+import com.raphael.springbootionic.repositories.RequestRepository;
 import com.raphael.springbootionic.repositories.StateRepository;
 
 
@@ -37,6 +45,10 @@ public class SpringBootAndIonicApplication implements CommandLineRunner {
 	private ClientRepository clientRepository;
 	@Autowired
 	private AddressRepository addressRepository;
+	@Autowired
+	private RequestRepository requestRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootAndIonicApplication.class, args);
@@ -83,7 +95,22 @@ public class SpringBootAndIonicApplication implements CommandLineRunner {
 		cli1.getAddresses().addAll(Arrays.asList(e1, e2));
 		
 		clientRepository.saveAll(Arrays.asList(cli1));
-		addressRepository.saveAll(Arrays.asList(e1, e2));		
+		addressRepository.saveAll(Arrays.asList(e1, e2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Request req1 = new Request(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		Request req2 = new Request(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+		
+		Payment pagt1 = new PaymentWithCard(null, PaymentState.SETTLED, req1, 6);
+		req1.setPayment(pagt1);
+		
+		Payment pagt2 = new PaymentWithTicket(null, PaymentState.PENDING, req2, sdf.parse("20/10/2017 19:35"), null);
+		req2.setPayment(pagt2);
+		
+		cli1.getRequests().addAll(Arrays.asList(req1, req2));
+		
+		requestRepository.saveAll(Arrays.asList(req1, req2));
+		paymentRepository.saveAll(Arrays.asList(pagt1, pagt2));
 		
 	}
 
