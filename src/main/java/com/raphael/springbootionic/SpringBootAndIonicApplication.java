@@ -17,6 +17,7 @@ import com.raphael.springbootionic.domain.PaymentWithCard;
 import com.raphael.springbootionic.domain.PaymentWithTicket;
 import com.raphael.springbootionic.domain.Product;
 import com.raphael.springbootionic.domain.Request;
+import com.raphael.springbootionic.domain.RequestItem;
 import com.raphael.springbootionic.domain.State;
 import com.raphael.springbootionic.domain.enums.ClientType;
 import com.raphael.springbootionic.domain.enums.PaymentState;
@@ -26,6 +27,7 @@ import com.raphael.springbootionic.repositories.CityRepository;
 import com.raphael.springbootionic.repositories.ClientRepository;
 import com.raphael.springbootionic.repositories.PaymentRepository;
 import com.raphael.springbootionic.repositories.ProductRepository;
+import com.raphael.springbootionic.repositories.RequestItemRepository;
 import com.raphael.springbootionic.repositories.RequestRepository;
 import com.raphael.springbootionic.repositories.StateRepository;
 
@@ -49,6 +51,8 @@ public class SpringBootAndIonicApplication implements CommandLineRunner {
 	private RequestRepository requestRepository;
 	@Autowired
 	private PaymentRepository paymentRepository;
+	@Autowired
+	private RequestItemRepository requestItemRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootAndIonicApplication.class, args);
@@ -111,6 +115,19 @@ public class SpringBootAndIonicApplication implements CommandLineRunner {
 		
 		requestRepository.saveAll(Arrays.asList(req1, req2));
 		paymentRepository.saveAll(Arrays.asList(pagt1, pagt2));
+		
+		RequestItem ri1 = new RequestItem(req1, p1, 0.00, 1, 2000.0);
+		RequestItem ri2 = new RequestItem(req1, p3, 0.00, 2, 80.0);
+		RequestItem ri3 = new RequestItem(req2, p2, 100.00, 1, 800.0);
+		
+		req1.getItems().addAll(Arrays.asList(ri1, ri2));
+		req2.getItems().addAll(Arrays.asList(ri3));
+		
+		p1.getItems().addAll(Arrays.asList(ri1));
+		p2.getItems().addAll(Arrays.asList(ri3));
+		p3.getItems().addAll(Arrays.asList(ri2));
+		
+		requestItemRepository.saveAll(Arrays.asList(ri1, ri2, ri3));
 		
 	}
 
