@@ -18,7 +18,7 @@ public class RequestResources {
 	private RequestService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Request> find(@PathVariable Integer id) {
 		
 		Request obj = service.getRequest(id);
 		return ResponseEntity.ok().body(obj);		
