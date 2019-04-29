@@ -3,9 +3,11 @@ package com.raphael.springbootionic.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.raphael.springbootionic.domain.Category;
+import com.raphael.springbootionic.exceptions.DataIntegrityException;
 import com.raphael.springbootionic.exceptions.ObjectNotFoundException;
 import com.raphael.springbootionic.repositories.CategoryRepository;
 
@@ -29,6 +31,16 @@ public class CategoryService {
 	public Category update(Category obj) {
 		find(obj.getId());
 		return repo.save(obj);
+		}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Is not possible delete this category that contains products!");
+		}
+		
 		}
 
 }
