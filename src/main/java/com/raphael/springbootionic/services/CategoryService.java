@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.raphael.springbootionic.domain.Category;
+import com.raphael.springbootionic.dto.CategoryDTO;
 import com.raphael.springbootionic.exceptions.DataIntegrityException;
 import com.raphael.springbootionic.exceptions.ObjectNotFoundException;
 import com.raphael.springbootionic.repositories.CategoryRepository;
@@ -55,5 +56,9 @@ public class CategoryService {
 		PageRequest pagerequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pagerequest);
 		}
+	
+	public Category fromDTO(CategoryDTO objDTO) {
+		return new Category(objDTO.getId(), objDTO.getName());
+	}
 
 }
