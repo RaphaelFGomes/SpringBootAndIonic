@@ -90,7 +90,7 @@ public class SpringBootAndIonicApplication implements CommandLineRunner {
 		stateRepository.saveAll(Arrays.asList(est1, est2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Client cli1 = new Client(null, "Maria SIlva", "maria@gmail.com", "3534535", ClientType.PERSON);
+		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "3534535", ClientType.PERSON);
 		cli1.getPhoneNumbers().addAll(Arrays.asList("53453543", "6435645"));
 		
 		Address e1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "42342432", cli1, c1);
