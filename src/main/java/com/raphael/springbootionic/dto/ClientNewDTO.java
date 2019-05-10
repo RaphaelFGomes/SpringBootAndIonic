@@ -2,22 +2,48 @@ package com.raphael.springbootionic.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.raphael.springbootionic.services.validation.ClientInsert;
+
+@ClientInsert
 public class ClientNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotEmpty(message="Required field")
+	@Length(min=5, max=120, message="Size must be between 5 and 120 characters")
 	private String name;
+	
+	@NotEmpty(message="Required field")
+	@Email(message="Invalid email")
 	private String email;
+	
+	@NotEmpty(message="Required field")
 	private String code;
+	
 	private Integer type;
 	
+	@NotEmpty(message="Required field")
 	private String publicPlace;
-	private String number;
+	
+	@NotEmpty(message="Required field")
+	private String number;	
+	
 	private String complement;
+	
 	private String neighborhood;
+	
+	@NotEmpty(message="Required field")
 	private String zipCode;
 	
-	private String phone1;
+	@NotEmpty(message="Required field")
+	private String phone1;	
+	
 	private String phone2;
+	
 	private String phone3;
 	
 	private Integer cityId;
