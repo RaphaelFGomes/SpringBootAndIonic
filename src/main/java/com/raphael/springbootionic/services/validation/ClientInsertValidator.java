@@ -6,12 +6,20 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.raphael.springbootionic.domain.Client;
 import com.raphael.springbootionic.domain.enums.ClientType;
 import com.raphael.springbootionic.dto.ClientNewDTO;
 import com.raphael.springbootionic.exception.FieldMessage;
+import com.raphael.springbootionic.repositories.ClientRepository;
 import com.raphael.springbootionic.services.validation.utils.BR;
 
 public class ClientInsertValidator implements ConstraintValidator<ClientInsert, ClientNewDTO> {
+	
+	@Autowired
+	private ClientRepository repo;
+	
 	@Override
 	public void initialize(ClientInsert ann) {
 	}
@@ -26,6 +34,11 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
 		
 		if (objDto.getType().equals(ClientType.COMPANY.getCod()) && !BR.isValidCNPJ(objDto.getCode())) {
 			list.add(new FieldMessage("code", "Invalid code"));
+		}
+		
+		Client aux = repo.findByEmail(objDto.getEmail());
+		if (aux != null) {
+			list.add(new FieldMessage("email", "Email already exists"));
 		}
 
 		for (FieldMessage e : list) {
